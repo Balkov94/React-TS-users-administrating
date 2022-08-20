@@ -1,0 +1,42 @@
+.formContainer{
+     width: 100%;
+     height: fit-content;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     border: 2px solid green;
+}
+
+.formContainer h1{
+     font-size: 28px;
+}
+.formContainer form div{
+      width: 100%;
+      padding-bottom: 12px;  
+      display: flex;
+      justify-content: space-between
+      
+}
+.mformContainerain label{
+     padding-right: 12px;
+}
+.formContainer form{
+     border: 2px solid blue;
+     height: fit-content;
+     width:400px;
+     display: flex;
+     flex-direction: column;
+     position: relative;
+     
+}
+
+.loginForm{
+    text-align: center;
+     gap: 18px;
+}
+.formSwitchBtn{
+     position: absolute;
+     right: 0;
+     top: 0;
+}
