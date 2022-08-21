@@ -1,0 +1,70 @@
+.card{
+     width: 260px;
+     height: fit-content;
+     display:flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     border: 2px solid gray;
+     position: relative;
+}
+.card img{
+     width: 240px;
+}
+.imgContainer{
+     display: flex;
+     justify-content: center;
+     width: 100%;
+     padding: 14px;
+     border: 1px solid orange;
+}
+.userDataContainer{
+     padding: 12px;
+     display:flex;
+     flex-direction: column;
+     align-items: flex-start;
+     width: 100%;
+}
+.card h1{
+     width: 100%;
+     text-align: center;
+     border-bottom: 1px solid gray;
+     margin-bottom: 12px;
+}
+.userDataContainer p{
+     padding-bottom: 8px;
+     font-size: 16px;
+}
+.optionsButton{
+     position: absolute;
+     top: 0;
+     right: 0;
+     width: 30px;
+     height: 40px;
+     cursor: pointer;
+}
+.optionsButton img{
+     width: 100%;
+     background-color:gray;
+}
+.cardMenu{
+     position: absolute;
+     top: 30px;
+     right: 0px;
+     background-color: black;
+     width: fit-content;
+     height: fit-content;
+     display: flex;
+     flex-direction: column;
+     text-align: right;
+
+}
+.cardMenu p{
+     padding:12px 12px 12px 40px;
+     font-size: 24px;
+     width: 100%;
+}
+.cardMenu p:hover{
+     background-color: gray;
+     cursor: pointer;
+}

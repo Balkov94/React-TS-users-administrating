@@ -3,6 +3,7 @@ import { IFormData } from "../FormContainer/RegisterForm";
 import { GenderEnum, RoleEnum, StatusEnum } from "../../Rest-APi-Client/shared-types";
 import { useState } from "react";
 import EditForm from "../FormContainer/EditForm";
+import AllUsersContainer from "../AllUsersContainer/AllUsersContainer";
 
 interface IUserDataContainerProps {
      user: IFormData | any;
@@ -49,6 +50,15 @@ function UserDataContainer({ user, handleFormData }: IUserDataContainerProps) {
                     editUser={user}
                     handleEditMode={handleEditMode}
                ></EditForm>)}
+
+               {/* element wrapper ->all users card + option to edit them */}
+               {
+                    (RoleEnum[user!.role]==="Admin") && <AllUsersContainer></AllUsersContainer>    
+               }
+               
+         
+         
+         
           </>
 
 
