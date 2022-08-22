@@ -6,14 +6,15 @@ import EditForm from "../FormContainer/EditForm";
 import AllUsersContainer from "../AllUsersContainer/AllUsersContainer";
 
 interface IUserDataContainerProps {
-     user: IFormData | any;
+     loggedUser: IFormData | any;
      handleFormData(formData?: any): void;
+     handleLogged():void;
 }
 type IEditMode = true | false
 
 // function UserDataContainer(props:IUserDataContainerProps) {
 
-function UserDataContainer({ user, handleFormData }: IUserDataContainerProps) {
+function UserDataContainer({ loggedUser, handleFormData,handleLogged}: IUserDataContainerProps) {
      const [editMode, setEditMode] = useState<IEditMode>(false);
 
      const handleEditMode = () => {
@@ -24,36 +25,43 @@ function UserDataContainer({ user, handleFormData }: IUserDataContainerProps) {
      return (
           <>
                <div className={styles.dataContainer}>
-                    <h1>Welcome, {user?.fname} {user?.lname}</h1>
+                    <h1>Welcome, {loggedUser?.fname} {loggedUser?.lname}</h1>
                     <div> <h2>Your profile:</h2></div>
                     <div className={styles.data}>
-                         <p>First name: {user?.fname}</p>
-                         <p>Last name: {user?.lname}</p>
-                         <p>Username: {user?.username}</p>
-                         <p>Password: {user?.password}</p>
-                         <p>Gender: {GenderEnum[user!.gender]}</p>
-                         <p>Role: {RoleEnum[user!.role]}</p>
-                         <p>Description: {user?.description}</p>
-                         <p>Status: {StatusEnum[user!.status]}</p>
-                         <p>Created on date: {user?.timeOfCreation}</p>
-                         <p>Last modification: {user?.timeOfModification}</p>
-                         <img className={styles.profilePic} src={user?.picture} alt="profile_picture" />
+                         <p>First name: {loggedUser?.fname}</p>
+                         <p>Last name: {loggedUser?.lname}</p>
+                         <p>Username: {loggedUser?.username}</p>
+                         <p>Password: {loggedUser?.password}</p>
+                         <p>Gender: {GenderEnum[loggedUser!.gender]}</p>
+                         <p>Role: {RoleEnum[loggedUser!.role]}</p>
+                         <p>Description: {loggedUser?.description}</p>
+                         <p>Status: {StatusEnum[loggedUser!.status]}</p>
+                         <p>Created on date: {loggedUser?.timeOfCreation}</p>
+                         <p>Last modification: {loggedUser?.timeOfModification}</p>
+                         <img className={styles.profilePic} src={loggedUser?.picture} alt="profile_picture" />
+                       
                     </div>
                     <button
                          onClick={handleEditMode}
                          className={styles.editProfileBtn}
-                    >Edit profile</button>
+                    >Edit profile
+                    </button>
+                    <button
+                         onClick={handleLogged}
+                         className={styles.logoutBtn}
+                    >Logout
+                    </button>
                </div>
 
                {editMode && (<EditForm
                     handleFormData={handleFormData}
-                    editUser={user}
+                    editUser={loggedUser}
                     handleEditMode={handleEditMode}
                ></EditForm>)}
 
                {/* element wrapper ->all users card + option to edit them */}
                {
-                    (RoleEnum[user!.role]==="Admin") && <AllUsersContainer></AllUsersContainer>    
+                    (RoleEnum[loggedUser!.role]==="Admin") && <AllUsersContainer loggedUser={loggedUser}></AllUsersContainer>    
                }
                
          

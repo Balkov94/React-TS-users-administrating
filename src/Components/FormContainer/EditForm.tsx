@@ -24,7 +24,10 @@ function EditForm({ editUser, handleFormData ,handleEditMode}: IFormParentProps)
      const sendFormData = (event: any) => {
           event.preventDefault();
           const updatedUser={...editObject,timeOfModification:`${new Date().toDateString()} ${new Date().toLocaleTimeString()}`};
+          //update profile pic if gender is changed and imput is ""
           handleFormData(updatedUser)
+          console.log(updatedUser);
+          
      }
 
 

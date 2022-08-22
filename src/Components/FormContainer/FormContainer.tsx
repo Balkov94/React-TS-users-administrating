@@ -12,7 +12,7 @@ type Logged = true | false;
 function FormContainer() {
      const [formType, setFormType] = useState<FormType>("login");
      const [logged, setLogged] = useState<Logged>(false)
-     const [user, setUser] = useState<IFormData>();
+     const [loggedUser, setLoggedUser] = useState<IFormData>();
 
 
      const handleFormType = (event: any) => {
@@ -38,15 +38,19 @@ function FormContainer() {
                          user.username === formData.username
                          && user.password === formData.password);
                     if (isLogged) {
-                         setUser(isLogged);
+                         setLoggedUser(isLogged);
                     }
                     return isLogged;
 
                })
                .then(res => {
                     return res !== undefined ?
-                         setLogged(logged => !logged) : alert("Wrong username or password!")
+                    handleLogged() : alert("Wrong username or password!")
                }).catch(err => alert(err))
+     }
+
+     const handleLogged= () =>{
+          setLogged(logged => !logged);
      }
 
      const handleRegisterData = (formData: IFormData) => {
@@ -69,7 +73,7 @@ function FormContainer() {
           .then(res=>{
                alert(`${formData.username}'s profile was updated.`)
                //after edint profile update user in state too
-               setUser(formData);
+               setLoggedUser(formData);
 
           })
           .catch(err=>alert(err))
@@ -93,7 +97,8 @@ function FormContainer() {
                                    ></RegisterForm>
                          )
                          : (<UserDataContainer
-                              user={user}
+                              loggedUser={loggedUser}
+                              handleLogged={handleLogged}
                               handleFormData={handleUserEdition}
                          ></UserDataContainer>)
 

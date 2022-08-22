@@ -34,6 +34,17 @@ function RegisterForm(props: IFormParentProps | undefined) {
                alert("Repeat password field doesn't match to password!")
                return;
           }
+          // add avatar pictures for default if missing
+          const currPicture = formData.get("picture") as string;
+          if (currPicture === "") {
+               const genderEnumNumber = formData.get("gender") as unknown as number;
+               if (genderEnumNumber == 1) {
+                    formData.set("picture", require('../../images/mavatar.png'));
+               }
+               else {
+                    formData.set("picture", require('../../images/favatar.png'));
+               }
+          }
 
           const newUser = new UserClass(
                undefined,
@@ -54,7 +65,7 @@ function RegisterForm(props: IFormParentProps | undefined) {
      }
 
 
-          //* UNCONTROLLED form (all inputs are uncontrolled)
+     //* UNCONTROLLED form (all inputs are uncontrolled)
      return (
           <div className={styles.registerForm}>
                <form action="submit" onSubmit={sendFormData}>
