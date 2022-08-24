@@ -10,7 +10,7 @@ export enum RoleEnum {
      User = 1, Admin,
 }
 export enum StatusEnum {
-     Active = 1, Suspended, Deactivated
+     Active = 1, Deactivated,Suspended,
 }
 
 export type DescriptionType = string | undefined

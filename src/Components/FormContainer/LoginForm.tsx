@@ -5,8 +5,10 @@ import { IFormData } from "./RegisterForm";
 export interface IFormParentProps {
      switchForm?: (event?: any) => void; //optional function in interface
      handleEditMode?: () => void;
-     handleFormData(formData?: any): void;
      editUser?: IFormData;
+     isAdminEdition?:boolean;
+     handleFormData(formData?: any): void;
+
 }
 
 
