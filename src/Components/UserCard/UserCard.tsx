@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { UserApi } from "../../Rest-APi-Client/client";
-import { RoleEnum, StatusEnum } from "../../Rest-APi-Client/shared-types";
+import { RoleEnum, StatusEnum, UserClass } from "../../Rest-APi-Client/shared-types";
 import EditForm from "../FormContainer/EditForm";
 import { IFormData } from "../FormContainer/RegisterForm";
 import styles from "./UserCard.module.css"
@@ -14,8 +14,7 @@ interface IUserCardProps {
 function UserCard({ user, handleDeleteUser,handleEditUser }: IUserCardProps) {
      const [cardMenu, setCardMenu] = useState(false);
      const [editMode, setEditMode] = useState(false);
-     const [rerender,setRerender] =useState(false);
-
+   
      const handleCardMenu = () => {
           setCardMenu(cardMenu => !cardMenu);
      }
@@ -24,19 +23,23 @@ function UserCard({ user, handleDeleteUser,handleEditUser }: IUserCardProps) {
           let text = "Are you sure you want to delete this user?";
           // eslint-disable-next-line no-restricted-globals
           if (confirm(text) === true) {
-               handleDeleteUser(user.id as number)
+               handleDeleteUser(user.id as number);
           }
 
      }
 
      const handleEditMode = () => {
-          setEditMode(editMode => !editMode);
+          setEditMode(editMode => !editMode);  
+          setCardMenu(false) ; 
      }
-     const onEdit = (updatedUser:any) => {
+
+     const onEdit = (updatedUser:UserClass) => {
           UserApi.update(updatedUser)
-          .then(res=>{
-               handleEditUser(updatedUser);
-               return updatedUser;
+          .then(user=>{
+               handleEditUser(user);
+               setCardMenu(false);
+               setEditMode(editMode=>!editMode);
+               return user;
           })
           .then(user=>{
                alert(`You edited ${user.username}'s profile.`)

@@ -5,6 +5,7 @@
      border: 2px solid orange;
      display: flex;
      flex-direction: column;
+     position: relative;
 }
 .userListTitle{
      width: 100%;
@@ -21,4 +22,10 @@
      justify-content: space-evenly;
      justify-items: flex-start;
      gap: 40px;
+}
+/* from user list add new users */
+.createNewUser{
+     position: absolute;
+     right:0;
+     top: 0;
 }

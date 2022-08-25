@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { UserApi } from "../../Rest-APi-Client/client";
-import { RoleEnum, StatusEnum } from "../../Rest-APi-Client/shared-types";
+import { UserClass } from "../../Rest-APi-Client/shared-types";
 import Filters from "../FIlters/Filter";
-import { IFormData } from "../FormContainer/RegisterForm";
+import RegisterForm, { IFormData } from "../FormContainer/RegisterForm";
 import UserCard from "../UserCard/UserCard";
 import styles from "./AllUsersContainer.module.css"
 
@@ -11,11 +11,10 @@ interface IAllUserContainerProps {
 }
 
 
-
-// function AllUsersContainer( {allUsers}:IAllUserContainerProps) {
 function AllUsersContainer(props: IAllUserContainerProps) {
      const [filtredData, setFiltredData] = useState<IFormData[]>([]);
      const [update, setUpdate] = useState(false);
+     const [showCreateForm, setShowCreateForm] = useState(false);
 
      const handleDeleteUser = (userID: number) => {
           UserApi.deleteById(userID)
@@ -23,10 +22,10 @@ function AllUsersContainer(props: IAllUserContainerProps) {
                     setFiltredData(filtredData.filter(user => user.id !== userID));
                     setUpdate(update => !update);
                })
-               .catch(err => alert(err))
+               .catch(err => alert(err.message))
      }
 
-     const handleEditUser = (editUser: any) => {
+     const handleEditUser = (editUser: UserClass) => {
           UserApi.update(editUser)
                .then(() => {
                     setFiltredData(filtredData.map(user => {
@@ -37,17 +36,45 @@ function AllUsersContainer(props: IAllUserContainerProps) {
                     }));
                     setUpdate(update => !update);
                })
-               .catch(err => alert(err))
+               .catch(err => alert(err.message))
      }
 
-     const handleFiltredData = (filtredUsers: any) => {
+
+     const handleFiltredData = (filtredUsers: UserClass[]) => {
           setFiltredData(filtredUsers);
-          
      }
+
+
+
+     const handleCreateUser = (newUserObj: IFormData) => {
+          UserApi.findAll()
+               .then(data => {
+                    if (data.some(user => user.username === newUserObj.username)) {
+                         alert("This username is already taken! Choose another one.")
+                         return;
+                    }
+                    UserApi.create(newUserObj)
+                         .then(res => {
+                              alert("Successful registration!");
+                         })
+                         .catch(err => alert(err))
+               })
+     }
+
 
      return (
           <div className={styles.allUsersContainer}>
                <h1 className={styles.userListTitle}>Users list</h1>
+               <button className={styles.createNewUser}
+                    onClick={() => setShowCreateForm(showCreateForm => !showCreateForm)}
+               >Create new user</button>
+               {
+                    showCreateForm
+                    && <RegisterForm
+                         handleFormData={handleCreateUser}
+                         isAdminEdition={true}
+                    ></RegisterForm>
+               }
                <Filters
                     update={update}
                     handleFiltredData={handleFiltredData}

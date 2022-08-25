@@ -1,23 +1,22 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import styles from "./FormContainer.module.css";
 import { IFormData } from "./RegisterForm";
 
 export interface IFormParentProps {
-     switchForm?: (event?: any) => void; //optional function in interface
+     switchForm?: (event: React.MouseEvent<HTMLButtonElement>) => void; //optional function in interface
      handleEditMode?: () => void;
      editUser?: IFormData;
-     isAdminEdition?:boolean;
-     handleFormData(formData?: any): void;
+
+     isAdminEdition?: boolean;
+     handleFormData(formData?: Partial<IFormData>): void;
 
 }
-
-
 
 function LoginForm(props: IFormParentProps) {
      const [username, setUsername] = useState("");
      const [password, setPassword] = useState("");
 
-     const handleInputs = (event: any) => {
+     const handleInputs = (event: React.ChangeEvent<HTMLInputElement>) => {
           switch (event.target.name) {
                case 'username':
                     setUsername(event.target.value);
@@ -29,7 +28,7 @@ function LoginForm(props: IFormParentProps) {
           }
      }
 
-     const sendFormData = (event: any) => {
+     const sendFormData = (event: React.FormEvent) => {
           event.preventDefault();
           props.handleFormData(
                {

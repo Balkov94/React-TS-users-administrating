@@ -32,6 +32,8 @@ function Filters({ handleFiltredData, update }: IFilterProps) {
                })
                .catch(err => alert(err))
      }, [update]);
+     //update is when parent prop change -> fetch users ,some user have been updated
+     //only when admin is editing users
 
      const hadnleRole = (event: React.ChangeEvent<HTMLSelectElement>) => {
           let role = event.target.value === "2" ? "Admin" :
@@ -50,7 +52,7 @@ function Filters({ handleFiltredData, update }: IFilterProps) {
           setSearchText(event.target.value);
      }
 
-     const handleSubmit = (event: any) => {
+     const handleSubmit = (event: React.FormEvent) => {
           event.preventDefault();
           let filtredData = allUsers.filter(user => {
                if (RoleEnum[user.role] === (role === "All" ? RoleEnum[user.role] : role)

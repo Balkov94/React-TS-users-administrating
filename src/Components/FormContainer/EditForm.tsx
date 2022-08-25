@@ -1,6 +1,10 @@
 import { IFormParentProps } from "./LoginForm";
 import styles from "./FormContainer.module.css";
-import { DescriptionType, GenderEnum, IdType, RoleEnum, StatusEnum, TimeOfModificationType, toIsoDate, UserClass } from "../../Rest-APi-Client/shared-types";
+import {
+     GenderEnum,
+     RoleEnum,
+     StatusEnum,
+} from "../../Rest-APi-Client/shared-types";
 import { useState } from "react";
 
 
@@ -35,7 +39,7 @@ function EditForm({ editUser, handleFormData, handleEditMode, isAdminEdition }: 
           <div className={styles.registerForm}>
                <form action="submit" onSubmit={sendFormData}>
                     <div className={styles.formTitle}>
-                         <h1>Edit profile
+                         <h1>Edit {editUser?.username}'s profile
                               <button className={styles.formSwitchBtn}
                                    onClick={handleEditMode}
                               >Exit edition</button>
@@ -65,9 +69,9 @@ function EditForm({ editUser, handleFormData, handleEditMode, isAdminEdition }: 
                                         <input onChange={handleInputs} type="text" name="password" id="password" value={editObject?.password} />
                                    </div>
                                    {/* edit self by Admin*/}
-                                   {    
+                                   {
 
-                                        (RoleEnum[editUser!.role]==="Admin")  &&
+                                        (RoleEnum[editUser!.role] === "Admin") &&
                                         <>
                                              <div>
                                                   <label htmlFor="status">User status</label>

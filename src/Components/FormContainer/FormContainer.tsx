@@ -4,6 +4,7 @@ import styles from "./FormContainer.module.css";
 import RegisterForm, { IFormData } from "./RegisterForm";
 import { UserApi } from "../../Rest-APi-Client/client"
 import UserDataContainer from "../UserDataContainer/UserDataContainer";
+import { UserClass } from "../../Rest-APi-Client/shared-types";
 
 type FormType = "login" | "register";
 type Logged = true | false;
@@ -15,9 +16,10 @@ function FormContainer() {
      const [loggedUser, setLoggedUser] = useState<IFormData>();
 
 
-     const handleFormType = (event: any) => {
+     const handleFormType = (event: React.MouseEvent<HTMLButtonElement>) => {
           event.preventDefault();
-          if (event.target.innerText.includes("login")) {
+
+          if (event.currentTarget.innerText.includes("login")) {
                setFormType("login")
           }
           else {
@@ -25,7 +27,7 @@ function FormContainer() {
           }
      }
 
-     const handleLoginData = (formData: any) => {
+     const handleLoginData = (formData: IFormData) => {
           // go to data check for entities and return 
           UserApi.findAll()
                .then((response) => response)
@@ -45,11 +47,11 @@ function FormContainer() {
                })
                .then(res => {
                     return res !== undefined ?
-                    handleLogged() : alert("Wrong username or password!")
+                         handleLogged() : alert("Wrong username or password!")
                }).catch(err => alert(err))
      }
 
-     const handleLogged= () =>{
+     const handleLogged = () => {
           setLogged(logged => !logged);
      }
 
@@ -63,20 +65,21 @@ function FormContainer() {
                     UserApi.create(formData)
                          .then(res => {
                               alert("Successful registration!");
+                              setFormType("login");
                          })
                          .catch(err => alert(err))
                })
      }
 
-     const handleUserEdition = (formData: any) => {
+     const handleUserEdition = (formData: UserClass) => {
           UserApi.update(formData)
-          .then(res=>{
-               alert(`${formData.username}'s profile was updated.`)
-               //after edint profile update user in state too
-               setLoggedUser(formData);
+               .then(res => {
+                    alert(`${formData.username}'s profile was updated.`)
+                    //after edint profile update user in state too
+                    setLoggedUser(formData);
 
-          })
-          .catch(err=>alert(err))
+               })
+               .catch(err => alert(err))
      }
 
 
@@ -101,9 +104,6 @@ function FormContainer() {
                               handleLogged={handleLogged}
                               handleFormData={handleUserEdition}
                          ></UserDataContainer>)
-
-
-
 
                }
 
