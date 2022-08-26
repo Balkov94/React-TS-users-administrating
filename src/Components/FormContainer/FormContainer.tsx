@@ -47,15 +47,15 @@ function FormContainer() {
                })
                .then(res => {
                     return res !== undefined ?
-                         handleLogged() : alert("Wrong username or password!")
+                         handleIslogged() : alert("Wrong username or password!")
                }).catch(err => alert(err))
      }
 
-     const handleLogged = () => {
+     const handleIslogged = () => {
           setLogged(logged => !logged);
      }
 
-     const handleRegisterData = (formData: IFormData) => {
+     const handleCreateUser = (formData: IFormData) => {
           UserApi.findAll()
                .then(data => {
                     if (data.some(user => user.username === formData.username)) {
@@ -91,18 +91,18 @@ function FormContainer() {
                               formType === "login" ?
                                    <LoginForm
                                         switchForm={handleFormType}
-                                        handleFormData={handleLoginData}
+                                        handleLoginData={handleLoginData}
                                    ></LoginForm>
                                    :
                                    <RegisterForm
                                         switchForm={handleFormType}
-                                        handleFormData={handleRegisterData}
+                                        handleCreateUser={handleCreateUser}
                                    ></RegisterForm>
                          )
                          : (<UserDataContainer
                               loggedUser={loggedUser}
-                              handleLogged={handleLogged}
-                              handleFormData={handleUserEdition}
+                              handleIslogged={handleIslogged}
+                              handleUserEdition={handleUserEdition}
                          ></UserDataContainer>)
 
                }

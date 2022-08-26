@@ -2,17 +2,12 @@ import React, { useState } from "react";
 import styles from "./FormContainer.module.css";
 import { IFormData } from "./RegisterForm";
 
-export interface IFormParentProps {
-     switchForm?: (event: React.MouseEvent<HTMLButtonElement>) => void; //optional function in interface
-     handleEditMode?: () => void;
-     editUser?: IFormData;
-
-     isAdminEdition?: boolean;
-     handleFormData(formData?: Partial<IFormData>): void;
-
+export interface ILoginFormProps {
+     switchForm?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+     handleLoginData(formData?: Partial<IFormData>): void;
 }
 
-function LoginForm(props: IFormParentProps) {
+function LoginForm({ handleLoginData, switchForm }: ILoginFormProps) {
      const [username, setUsername] = useState("");
      const [password, setPassword] = useState("");
 
@@ -24,13 +19,12 @@ function LoginForm(props: IFormParentProps) {
                case 'password':
                     setPassword(event.target.value)
                     break;
-
           }
      }
 
      const sendFormData = (event: React.FormEvent) => {
           event.preventDefault();
-          props.handleFormData(
+          handleLoginData(
                {
                     username,
                     password
@@ -47,7 +41,7 @@ function LoginForm(props: IFormParentProps) {
                     <div className={styles.formTitle}>
                          <h1>Login
                               <button className={styles.formSwitchBtn}
-                                   onClick={props.switchForm}
+                                   onClick={switchForm}
                               >go to register</button>
                          </h1>
                     </div>
@@ -70,6 +64,11 @@ function LoginForm(props: IFormParentProps) {
                          />
                     </div>
                     <button type="submit"> login</button>
+                    <div className={styles.testTipsContainer}>
+                         <p>Tips for test: username:1 / password:1</p>
+
+
+                    </div>
                </form>
           </div>
      );

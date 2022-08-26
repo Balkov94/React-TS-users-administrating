@@ -1,4 +1,4 @@
-import { IFormParentProps } from "./LoginForm";
+import { ILoginFormProps } from "./LoginForm";
 import styles from "./FormContainer.module.css";
 import {
      GenderEnum,
@@ -6,12 +6,17 @@ import {
      StatusEnum,
 } from "../../Rest-APi-Client/shared-types";
 import { useState } from "react";
+import { IFormData } from "./RegisterForm";
+
+interface IEditFormProps{
+     handleFormData(formData?: Partial<IFormData>): void;
+     isAdminEdition?: boolean;
+     handleEditMode?: (event?: any) => void;
+     editUser?: IFormData;
+}
 
 
-
-
-
-function EditForm({ editUser, handleFormData, handleEditMode, isAdminEdition }: IFormParentProps) {
+function EditForm({ editUser, handleFormData, handleEditMode, isAdminEdition }: IEditFormProps) {
      // USING props into a local STATE -> because there is A SINGLE SOURCE OF TRUTH
      const [editObject, setEditObject] = useState(editUser)
 
@@ -120,8 +125,6 @@ function EditForm({ editUser, handleFormData, handleEditMode, isAdminEdition }: 
                               <option value={GenderEnum.female}>female</option>
                          </select>
                     </div>
-
-
                     <div>
                          <label htmlFor="picture">Picture(URL)</label>
                          <input onChange={handleInputs} type="text" name="picture" id="picture" value={editObject?.picture} />

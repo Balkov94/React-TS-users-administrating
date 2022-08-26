@@ -1,4 +1,3 @@
-import { IFormParentProps } from "./LoginForm";
 import styles from "./FormContainer.module.css";
 import {
      DescriptionType,
@@ -7,7 +6,6 @@ import {
      TimeOfModificationType,
      UserClass
 } from "../../Rest-APi-Client/shared-types";
-
 
 export interface IFormData {
      id?: IdType
@@ -22,12 +20,21 @@ export interface IFormData {
      status: StatusEnum,
      timeOfCreation: string,
      timeOfModification: TimeOfModificationType,
+}
 
+export interface IRegisterFormProps {
+     //switchForm is using only in FormContainer(homepage)
+     switchForm?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+     // handleShowCreateForm in admin creating user (AllUsersContainer)
+     handleShowCreateForm?: () => void;
+     isAdminUsingForm?: boolean;
+     handleCreateUser(formData?: Partial<IFormData>): void;
+     //*Register form is using in home-register & Admin->create new user
+     // with diff props depends on creation
 }
 
 
-function RegisterForm(props: IFormParentProps | undefined) {
-     // const [formData, setFormData] = useState({});
+function RegisterForm({ handleCreateUser, isAdminUsingForm, switchForm, handleShowCreateForm }: IRegisterFormProps) {
 
      const sendFormData = (event: any) => {
           event.preventDefault();
@@ -57,7 +64,7 @@ function RegisterForm(props: IFormParentProps | undefined) {
                alert("Your password must contain atleast one digit and special sign( _ , &, $ etc.)");
                return;
           }
-        
+
           // add avatar pictures for default if missing
           const currPicture = formData.get("picture") as string;
           if (currPicture === "") {
@@ -83,29 +90,29 @@ function RegisterForm(props: IFormParentProps | undefined) {
           )
 
           console.log(newUser);
-
-          // console.log(newUser.toString());
-          props!.handleFormData(newUser)
+          handleCreateUser(newUser)
      }
-
 
      //* UNCONTROLLED form (all inputs are uncontrolled)
      return (
           <div className={styles.registerForm}>
                <form action="submit" onSubmit={sendFormData}>
                     <div className={styles.formTitle}>
-                         <h1>Register
-                              {
-                                   !props?.isAdminEdition
-                                   && (
+                         <h1>Register</h1>
+                         {
+                              isAdminUsingForm
+                                   ? (<button
+                                        className={styles.formSwitchBtn}
+                                        onClick={handleShowCreateForm}
+                                   >close</button>)
+                                   : (
                                         <button
                                              className={styles.formSwitchBtn}
-                                             onClick={props!.switchForm}
+                                             onClick={switchForm}
                                         >go to login</button>
                                    )
-                              }
+                         }
 
-                         </h1>
                     </div>
                     <div>
                          <label htmlFor="fname">*First name: </label>
@@ -134,9 +141,10 @@ function RegisterForm(props: IFormParentProps | undefined) {
                               <option value={GenderEnum.female}>female</option>
                          </select>
                     </div>
-                    {/* when register User Default / when admin create user role - OPTIONS */}
+
                     {
-                         props?.isAdminEdition
+                         // when register User Default / when admin create user role - OPTIONS 
+                         isAdminUsingForm
                               ? (<div>
                                    <label htmlFor="role">Role:</label>
                                    <select name="role" id="role">

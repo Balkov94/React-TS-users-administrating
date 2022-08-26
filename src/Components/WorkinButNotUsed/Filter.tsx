@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import reactMarkdown from "react-markdown";
 import { UserApi } from "../../Rest-APi-Client/client";
 import { RoleEnum, StatusEnum } from "../../Rest-APi-Client/shared-types";
 import { IFormData } from "../FormContainer/RegisterForm";
@@ -30,7 +31,7 @@ function Filters({ handleFiltredUsers, update }: IFilterProps) {
                     handleFiltredUsers(filtredData);
                })
                .catch(err => alert(err))
-     }, []);
+     }, [update]);
 
      //update is when parent prop change -> fetch users ,some user have been updated
      //only when admin is editing users
