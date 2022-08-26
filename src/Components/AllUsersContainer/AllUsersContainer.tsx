@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UserApi } from "../../Rest-APi-Client/client";
-import { UserClass } from "../../Rest-APi-Client/shared-types";
-import Filters from "../FIlters/Filter";
+import { RoleEnum, StatusEnum, UserClass } from "../../Rest-APi-Client/shared-types";
+import Filters, { IFilterValues } from "../FIlters/Filter";
 import RegisterForm, { IFormData } from "../FormContainer/RegisterForm";
 import UserCard from "../UserCard/UserCard";
 import styles from "./AllUsersContainer.module.css"
@@ -12,42 +12,42 @@ interface IAllUserContainerProps {
 
 
 function AllUsersContainer({ loggedUser }: IAllUserContainerProps) {
-     const [filtredUsers, setFiltredUsers] = useState<IFormData[]>([]);
-     const [update, setUpdate] = useState(false);
+     const [fetchedUsers, setFetchedUsers] = useState<IFormData[]>([]);
      const [showCreateForm, setShowCreateForm] = useState(false);
+     //get all users once
+     useEffect(() => {
+          UserApi.findAll()
+               .then(res => {
+                    setFetchedUsers(res);
+               })
+               .catch(err => alert("ERROR:Coudn't get users from the date!"))
+     }, []);
 
+     // users CRUD ___________________________________________________________________
      const handleDeleteUser = (userID: number) => {
           UserApi.deleteById(userID)
                .then(() => {
-                    setFiltredUsers(filtredUsers.filter(user => user.id !== userID));
-                    setUpdate(update => !update);
+                    setFetchedUsers(fetchedUsers.filter(user => user.id !== userID));
                })
                .catch(err => {
-                    alert("Error, user is already deleted!");    
-               })                
+                    alert("Error: Unsuccessful deletion!");
+               })
      }
 
      const handleEditUser = (editUser: UserClass) => {
           UserApi.update(editUser)
                .then(() => {
-                    setFiltredUsers(filtredUsers.map(user => {
+                    setFetchedUsers(fetchedUsers.map(user => {
                          if (user.id === editUser.id) {
                               return editUser;
                          }
                          return user
                     }));
-                    setUpdate(update => !update);
                })
                .catch(err => {
-                    alert("Unsuccessful edition");
+                    alert("ERROR: Unsuccessful edition!");
                })
      }
-
-     const handleFiltredUsers = (filtredUsers: UserClass[]) => {
-          setFiltredUsers(filtredUsers);
-     }
-
-
 
      const handleCreateUser = (newUserObj: IFormData) => {
           UserApi.findAll()
@@ -59,16 +59,25 @@ function AllUsersContainer({ loggedUser }: IAllUserContainerProps) {
                     UserApi.create(newUserObj)
                          .then(res => {
                               alert("Successful registration!");
-                              setUpdate(update => !update);
+                              setFetchedUsers(fetchedUsers => fetchedUsers.concat(res));
                          })
-                         .catch(err => alert(err))
+                         .catch(err => alert("ERROR: Unsuccessful creation!!!"))
                })
      }
-
-
+     // _____________________________________________________________________________________
      const handleShowCreateForm = () => {
           setShowCreateForm(false);
      }
+
+     // FILTER handler _______________________________________________________________________
+     const [filter, setFilter] = useState<IFilterValues>({
+          role: "All", status: "All", searchText: "",
+     });
+     const handleFilterChanges = (newFilterValues: IFilterValues) => {
+          setFilter(newFilterValues);
+     }
+
+
 
      return (
           <div className={styles.allUsersContainer}>
@@ -86,21 +95,32 @@ function AllUsersContainer({ loggedUser }: IAllUserContainerProps) {
                }
 
                <Filters
-                    update={update}
-                    handleFiltredUsers={handleFiltredUsers}
+                    filterValues={filter}
+                    onfilterChange={handleFilterChanges}
                ></Filters>
 
                <div className={styles.cardWrapper}>
-                    {    //additional filter not to show logged user)
-                         filtredUsers.filter(user => user.id !== loggedUser.id)
-                              .map((user: IFormData) => {
-                                   return <UserCard
-                                        key={user.id}
-                                        user={user}
-                                        handleEditUser={handleEditUser}
-                                        handleDeleteUser={handleDeleteUser}
-                                   ></UserCard>
-                              })
+                    {
+                         fetchedUsers.filter(user => {
+                              // if filtervalue ==="All" need to return all of curr value
+                              const role = filter.role === "All" ? user.role : filter.role;
+                              const status = filter.status === "All" ? user.status : filter.status;
+                              if (user.id !== loggedUser.id
+                                   && user.role === role
+                                   && user.status === status
+                                   && (user.username.toLowerCase().includes(filter.searchText.toLowerCase())
+                                        || ((user.fname.toLowerCase().includes(filter.searchText.toLowerCase())))
+                                        || (user.lname.toLowerCase().includes(filter.searchText.toLowerCase())))) {
+                                   return user;
+                              }
+                         }).map((user: IFormData) => {
+                              return <UserCard
+                                   key={user.id}
+                                   user={user}
+                                   handleEditUser={handleEditUser}
+                                   handleDeleteUser={handleDeleteUser}
+                              ></UserCard>
+                         })
                     }
                </div>
           </div>

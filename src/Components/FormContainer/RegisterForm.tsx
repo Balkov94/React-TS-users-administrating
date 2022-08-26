@@ -88,7 +88,7 @@ function RegisterForm({ handleCreateUser, isAdminUsingForm, switchForm, handleSh
                formData.get("picture") as string,
                formData.get("description") as string,
           )
-
+               //
           console.log(newUser);
           handleCreateUser(newUser)
      }

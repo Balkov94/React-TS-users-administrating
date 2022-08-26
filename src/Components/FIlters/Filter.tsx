@@ -1,95 +1,74 @@
-import React, { useEffect, useState } from "react";
-import { UserApi } from "../../Rest-APi-Client/client";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import { RoleEnum, StatusEnum } from "../../Rest-APi-Client/shared-types";
-import { IFormData } from "../FormContainer/RegisterForm";
-import styles from "./Filters.module.css"
+import styles from "./Filters.module.css";
 
+export interface IFilterValues {
+     role: string,
+     status: string
+     searchText: string,
+}
 interface IFilterProps {
-     handleFiltredUsers(filtredUsers: IFormData[]): void;
-     update?: boolean,
+     onfilterChange(newFilterValues: IFilterValues): void;
+     filterValues: IFilterValues;
 }
 
-function Filters({ handleFiltredUsers, update }: IFilterProps) {
-     const [allUsers, setallUsers] = useState<IFormData[]>([]);
-     const [role, setRole] = useState<string>("All");
-     const [status, setStatus] = useState<string>("All");
-     const [searchText, setSearchText] = useState("");
+function Filters({ onfilterChange, filterValues }: IFilterProps) {
+     const [role, setRole] = useState<string>(filterValues.role);
+     const [status, setStatus] = useState<string>(filterValues.status);
+     const [searchText, setSearchText] = useState(filterValues.searchText);
 
-     //initial rendering users from data / get allUsers
-     useEffect(() => {
-          UserApi.findAll()
-               .then(res => {
-                    setallUsers(res)
-                    let filtredData = res.filter(user => {
-                         if (RoleEnum[user.role] === (role === "All" ? RoleEnum[user.role] : role)
-                              && StatusEnum[user.status] === (status === "All" ? StatusEnum[user.status] : status)) {
-                              return user
-                         }
-                    })
-                    console.log("entered in useEffect Hook - Filter")
-                    handleFiltredUsers(filtredData);
-               })
-               .catch(err => alert(err))
-     }, []);
-
-     //update is when parent prop change -> fetch users ,some user have been updated
-     //only when admin is editing users
 
      const hadnleRole = (event: React.ChangeEvent<HTMLSelectElement>) => {
-          let role = event.target.value === "2" ? "Admin" :
-               (event.target.value === "1") ? "User" : "All";
-          setRole(role);
+          // let role = event.target.value === "2" ? "Admin" :
+          //      (event.target.value === "1") ? "User" : "All";
+          // setRole(role);
+          setRole(event.target.value);
 
      }
      const handleStatus = (event: React.ChangeEvent<HTMLSelectElement>) => {
-          let status = event.target.value === "1" ? "Active" :
-               (event.target.value === "2") ? "Deactivated" :
-                    (event.target.value === "3") ? "Suspended" : "All";
-          setStatus(status);
+          // let status = event.target.value === "1" ? "Active" :
+          //      (event.target.value === "2") ? "Deactivated" :
+          //           (event.target.value === "3") ? "Suspended" :"All";
+          // setStatus(status);
+          setStatus(event.target.value);
      }
 
      const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
           setSearchText(event.target.value);
      }
 
-     const handleSubmit = (event: React.FormEvent) => {
+     const onFilterFormChange = (event: React.ChangeEvent<any>) => {
           event.preventDefault();
-          let filtredUsers = allUsers.filter(user => {
-               if (RoleEnum[user.role] === (role === "All" ? RoleEnum[user.role] : role)
-                    && StatusEnum[user.status] === (status === "All" ? StatusEnum[user.status] : status)
-                    && (user.fname.toLocaleLowerCase().includes(searchText)
-                         || user.lname.toLocaleLowerCase().includes(searchText)
-                         || user.username.toLocaleLowerCase().includes(searchText))) {
-                    return user
-               }
-          })
-
-          //filter allUsers (allUsers are get by initial data fetch in effectHook)
-          handleFiltredUsers(filtredUsers);
+          const propName = event.target.name;
+          const propValue = event.target.value;
+          //dynamically filter (without submit)
+          //create new filter and overide last changed input 
+          let newFilter = { role: role, status: status, searchText: searchText, [propName]: propValue }
+          onfilterChange({ ...newFilter })
 
      }
 
      return (
-          <form action="submit" onSubmit={(event) => handleSubmit(event)}>
+          <form action="submit" onChange={(event) => onFilterFormChange(event)}>
                <div className={styles.searchContainer}>
-                    <label htmlFor="search">Search by names or username:</label>
-                    <input type="text" name="search" id="search"
+                    <label htmlFor="searchText">Search by names or username:</label>
+                    <input type="text" name="searchText" id="searchText"
                          value={searchText}
                          onChange={(event) => handleInput(event)}
                          onClick={() => setSearchText("")}
                     />
 
-                    <label htmlFor="filterByRole">Filter by Role:</label>
-                    <select name="filterByRole" id="filterByRole"
+                    <label htmlFor="role">Filter by Role:</label>
+                    <select name="role" id="role"
                          onChange={(event) => hadnleRole(event)}
-                         defaultValue={"All"}>
+                         defaultValue={role}>
                          <option value={"All"}>All</option>
                          <option value={RoleEnum.User}>User</option>
                          <option value={RoleEnum.Admin}>Admin</option>
                     </select>
 
-                    <label htmlFor="filterByStatus">Filter by Status:</label>
-                    <select name="filterByStatus" id="filterByStatus"
+                    <label htmlFor="status">Filter by Status:</label>
+                    <select name="status" id="status"
                          onChange={(event) => handleStatus(event)}
                          defaultValue={"All"}>
                          <option value={"All"}>All</option>
@@ -97,7 +76,7 @@ function Filters({ handleFiltredUsers, update }: IFilterProps) {
                          <option value={StatusEnum.Deactivated}>Deactivated</option>
                          <option value={StatusEnum.Suspended}>Suspended</option>
                     </select>
-                    <button type="submit">Filter</button>
+                    {/* <button type="submit">Filter</button> */}
                </div>
           </form>
 
