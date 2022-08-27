@@ -49,36 +49,39 @@ function Filters({ onfilterChange, filterValues }: IFilterProps) {
      }
 
      return (
-          <form action="submit" onChange={(event) => onFilterFormChange(event)}>
-               <div className={styles.searchContainer}>
-                    <label htmlFor="searchText">Search by names or username:</label>
-                    <input type="text" name="searchText" id="searchText"
-                         value={searchText}
-                         onChange={(event) => handleInput(event)}
-                         onClick={() => setSearchText("")}
-                    />
+          <div className={styles.filterContainer}>
+               <form action="submit" onChange={(event) => onFilterFormChange(event)} className={styles.filterForm}>
+                    <div >
+                         <label htmlFor="searchText">Search by names or username:</label>
+                         <input type="text" name="searchText" id="searchText"
+                              value={searchText}
+                              onChange={(event) => handleInput(event)}
+                              onClick={() => setSearchText("")}
+                         />
 
-                    <label htmlFor="role">Filter by Role:</label>
-                    <select name="role" id="role"
-                         onChange={(event) => hadnleRole(event)}
-                         defaultValue={role}>
-                         <option value={"All"}>All</option>
-                         <option value={RoleEnum.User}>User</option>
-                         <option value={RoleEnum.Admin}>Admin</option>
-                    </select>
+                         <label htmlFor="role">Filter by Role:</label>
+                         <select name="role" id="role"
+                              onChange={(event) => hadnleRole(event)}
+                              defaultValue={role}>
+                              <option value={"All"}>All</option>
+                              <option value={RoleEnum.User}>User</option>
+                              <option value={RoleEnum.Admin}>Admin</option>
+                         </select>
 
-                    <label htmlFor="status">Filter by Status:</label>
-                    <select name="status" id="status"
-                         onChange={(event) => handleStatus(event)}
-                         defaultValue={"All"}>
-                         <option value={"All"}>All</option>
-                         <option value={StatusEnum.Active}>Active</option>
-                         <option value={StatusEnum.Deactivated}>Deactivated</option>
-                         <option value={StatusEnum.Suspended}>Suspended</option>
-                    </select>
-                    {/* <button type="submit">Filter</button> */}
-               </div>
-          </form>
+                         <label htmlFor="status">Filter by Status:</label>
+                         <select name="status" id="status"
+                              onChange={(event) => handleStatus(event)}
+                              defaultValue={"All"}>
+                              <option value={"All"}>All</option>
+                              <option value={StatusEnum.Active}>Active</option>
+                              <option value={StatusEnum.Deactivated}>Deactivated</option>
+                              <option value={StatusEnum.Suspended}>Suspended</option>
+                         </select>
+                         {/* <button type="submit">Filter</button> */}
+                    </div>
+               </form>
+          </div>
+
 
      );
 }

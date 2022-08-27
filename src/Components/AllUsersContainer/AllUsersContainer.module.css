@@ -7,24 +7,29 @@
      flex-direction: column;
      position: relative;
      border-top: 2px solid rgb(4, 82, 4);
+     background-image: url("../../images/carbon1.webp");
+     background-size: contain;
 }
 .userListTitle{
      width: 100%;
      text-align: center;
-     font-size: 28px;
+     font-size: 50px !important;
      margin-bottom: 26px;
+     color: rgb(9, 181, 9);
 }
 .cardWrapper{
      width: 100%;
-     padding:20px;
+     padding:40px;
      display: flex;
      flex-direction: row;
      flex-wrap: wrap;
-     justify-content: space-between;
+
+     justify-content:center;
      align-items: flex-start;
-     gap: 40px 20px;
-     border: 2px solid green;
-     background-color: black;
+     gap: 40px 40px;
+
+     /* border: 2px solid green; */
+     
 }
 /* from user list add new users */
 .createNewUser{

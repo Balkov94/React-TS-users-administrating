@@ -27,7 +27,7 @@ export class UserClass {
           public role = RoleEnum.User,
           public picture: string,
           public description: DescriptionType,
-          public status = StatusEnum.Active,
+          public status = (StatusEnum.Active),
           public timeOfCreation:string = `${new Date().toDateString()} ${new Date().toLocaleTimeString()} `,
           public timeOfModification:TimeOfModificationType = null,
      ) { }

@@ -50,15 +50,19 @@ function LoginForm({ handleLoginData, switchForm }: ILoginFormProps) {
                          <input type="text"
                               name="username"
                               id="username"
+                              // minLength={2}
+                              required={true}
                               value={username}
                               onChange={handleInputs}
                          />
                     </div>
                     <div>
                          <label htmlFor="password">password</label>
-                         <input type="text"
+                         <input type="password"
                               name="password"
                               id="password"
+                              // minLength={2}
+                              required={true}
                               value={password}
                               onChange={handleInputs}
                          />

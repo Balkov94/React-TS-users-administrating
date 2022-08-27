@@ -8,12 +8,13 @@ import { UserClass } from "../../Rest-APi-Client/shared-types";
 
 type FormType = "login" | "register";
 type Logged = true | false;
-
+export type IEditMode = true | false
 
 function FormContainer() {
      const [formType, setFormType] = useState<FormType>("login");
      const [logged, setLogged] = useState<Logged>(false)
      const [loggedUser, setLoggedUser] = useState<IFormData>();
+
 
 
      const handleFormType = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -71,12 +72,21 @@ function FormContainer() {
                })
      }
 
+     // editmode_____to show or not EditForm and auto close it on update
+     const [editMode, setEditMode] = useState<IEditMode>(false);
+
+     const handleEditMode = () => {
+          setEditMode(editMode => !editMode);
+     }
+
      const handleUserEdition = (formData: UserClass) => {
           UserApi.update(formData)
                .then(res => {
                     alert(`${formData.username}'s profile was updated.`)
                     //after edint profile update user in state too
                     setLoggedUser(formData);
+                    // close edinform
+                    handleEditMode();
 
                })
                .catch(err => alert(err))
@@ -103,6 +113,9 @@ function FormContainer() {
                               loggedUser={loggedUser}
                               handleIslogged={handleIslogged}
                               handleUserEdition={handleUserEdition}
+
+                              handleEditMode={handleEditMode}
+                              currEditMode={editMode}
                          ></UserDataContainer>)
 
                }

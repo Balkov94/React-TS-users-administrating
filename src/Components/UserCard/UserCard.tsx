@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { UserApi } from "../../Rest-APi-Client/client";
 import { RoleEnum, StatusEnum, UserClass } from "../../Rest-APi-Client/shared-types";
-import EditForm from "../FormContainer/EditForm";
-import { IFormData } from "../FormContainer/RegisterForm";
+import EditForm from "../AllFormTypes/EditForm";
+import { IFormData } from "../AllFormTypes/RegisterForm";
 import styles from "./UserCard.module.css"
 
 interface IUserCardProps {
@@ -11,10 +11,10 @@ interface IUserCardProps {
      handleEditUser(user: any): void;
 }
 
-function UserCard({ user, handleDeleteUser,handleEditUser }: IUserCardProps) {
+function UserCard({ user, handleDeleteUser, handleEditUser }: IUserCardProps) {
      const [cardMenu, setCardMenu] = useState(false);
      const [editMode, setEditMode] = useState(false);
-   
+
      const handleCardMenu = () => {
           setCardMenu(cardMenu => !cardMenu);
      }
@@ -29,22 +29,22 @@ function UserCard({ user, handleDeleteUser,handleEditUser }: IUserCardProps) {
      }
 
      const handleEditMode = () => {
-          setEditMode(editMode => !editMode);  
-          setCardMenu(false) ; 
+          setEditMode(editMode => !editMode);
+          setCardMenu(false);
      }
 
-     const onEdit = (updatedUser:UserClass) => {
+     const onEdit = (updatedUser: UserClass) => {
           UserApi.update(updatedUser)
-          .then(user=>{
-               handleEditUser(user);
-               setCardMenu(false);
-               setEditMode(editMode=>!editMode);
-               return user;
-          })
-          .then(user=>{
-               alert(`You edited ${user.username}'s profile.`)
-          })
-          .catch(err=>alert(err))
+               .then(user => {
+                    handleEditUser(user);
+                    setCardMenu(false);
+                    setEditMode(editMode => !editMode);
+                    return user;
+               })
+               .then(user => {
+                    alert(`You edited ${user.username}'s profile.`)
+               })
+               .catch(err => alert(err))
      }
 
      return (
@@ -63,7 +63,7 @@ function UserCard({ user, handleDeleteUser,handleEditUser }: IUserCardProps) {
                                         alt="someimg"></img>
                               </div>
                               <div className={styles.optionsButton} onClick={handleCardMenu}>
-                                   <img src={require("./s2.png")} alt="optionsIcon" />
+                                   <img src={require("./optIcon.png")} alt="optionsIcon" />
                               </div>
                               {
                                    cardMenu && (<div className={styles.cardMenu}>

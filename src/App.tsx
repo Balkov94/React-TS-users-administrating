@@ -1,7 +1,7 @@
 import Header from './Components/Header/Header';
 import style from "./app.module.css"
 import Footer from './Components/Footer/Footer';
-import FormContainer from './Components/FormContainer/FormContainer';
+import FormContainer from './Components/AllFormTypes/FormContainer';
 
 
 

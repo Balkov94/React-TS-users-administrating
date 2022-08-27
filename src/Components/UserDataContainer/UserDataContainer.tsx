@@ -1,29 +1,35 @@
 import styles from "./UserDataContainer.module.css"
-import { IFormData } from "../FormContainer/RegisterForm";
 import { GenderEnum, RoleEnum, StatusEnum } from "../../Rest-APi-Client/shared-types";
-import { useState } from "react";
-import EditForm from "../FormContainer/EditForm";
+import EditForm from "../AllFormTypes/EditForm";
 import AllUsersContainer from "../AllUsersContainer/AllUsersContainer";
+import { IEditMode } from "../AllFormTypes/FormContainer";
 
 interface IUserDataContainerProps {
      loggedUser: any; //IFormData | UserClass(parent conditional rendering checkED)
      handleUserEdition(formData?: any): void;
      handleIslogged(): void;
+     handleEditMode(): void;
+     currEditMode: IEditMode;
 }
-type IEditMode = true | false
 
+function UserDataContainer({ loggedUser,
+     handleUserEdition,
+     handleIslogged,
+     handleEditMode,
+     currEditMode }: IUserDataContainerProps) {
+     // const [editMode, setEditMode] = useState<IEditMode>(false);
 
-function UserDataContainer({ loggedUser, handleUserEdition, handleIslogged }: IUserDataContainerProps) {
-     const [editMode, setEditMode] = useState<IEditMode>(false);
-
-     const handleLoggedUserEditMode = () => {
-          setEditMode(editMode => !editMode)
-     }
+     // const handleLoggedUserEditMode = () => {
+     //      // setEditMode(editMode => !editMode)
+     //      handleEditMode();
+     // }
 
      return (
           <>
                <div className={styles.dataContainer}>
-                    <h1>Welcome, {loggedUser?.fname} - {RoleEnum[loggedUser.role]}</h1>
+                    <h1>
+                         &#128075; Welcome, {loggedUser?.fname} - {RoleEnum[loggedUser.role]}
+                    </h1>
                     <div> <h2>Your profile:</h2></div>
                     <div className={styles.data}>
                          <p>First name: {loggedUser?.fname}</p>
@@ -32,7 +38,7 @@ function UserDataContainer({ loggedUser, handleUserEdition, handleIslogged }: IU
                          <p>Password: {loggedUser?.password}</p>
                          <p>Gender: {GenderEnum[loggedUser!.gender]}</p>
                          <p>Role: {RoleEnum[loggedUser!.role]}</p>
-                         <p>Description: {loggedUser?.description}</p>
+                         <p className={styles.descriptionP}>Description: {loggedUser?.description}</p>
                          <p>Status: {StatusEnum[loggedUser!.status]}</p>
                          <p>Created on date: {loggedUser?.timeOfCreation}</p>
                          <p>Last modification: {loggedUser?.timeOfModification}</p>
@@ -40,7 +46,7 @@ function UserDataContainer({ loggedUser, handleUserEdition, handleIslogged }: IU
 
                     </div>
                     <button
-                         onClick={handleLoggedUserEditMode}
+                         onClick={handleEditMode}
                          className={styles.editProfileBtn}
                     >Edit profile
                     </button>
@@ -51,11 +57,11 @@ function UserDataContainer({ loggedUser, handleUserEdition, handleIslogged }: IU
                     </button>
                </div>
 
-               {editMode
+               {currEditMode
                     && (<EditForm
                          handleFormData={handleUserEdition}
                          editUser={loggedUser}
-                         handleEditMode={handleLoggedUserEditMode}
+                         handleEditMode={handleEditMode}
                     ></EditForm>)
                }
 

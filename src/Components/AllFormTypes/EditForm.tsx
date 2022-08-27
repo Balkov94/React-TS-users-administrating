@@ -1,4 +1,3 @@
-import { ILoginFormProps } from "./LoginForm";
 import styles from "./FormContainer.module.css";
 import {
      GenderEnum,
@@ -8,15 +7,18 @@ import {
 import { useState } from "react";
 import { IFormData } from "./RegisterForm";
 
-interface IEditFormProps{
+interface IEditFormProps {
      handleFormData(formData?: Partial<IFormData>): void;
      isAdminEdition?: boolean;
      handleEditMode?: (event?: any) => void;
      editUser?: IFormData;
 }
 
+function EditForm({ editUser,
+     handleFormData,
+     handleEditMode,
+     isAdminEdition }: IEditFormProps) {
 
-function EditForm({ editUser, handleFormData, handleEditMode, isAdminEdition }: IEditFormProps) {
      // USING props into a local STATE -> because there is A SINGLE SOURCE OF TRUTH
      const [editObject, setEditObject] = useState(editUser)
 
@@ -32,10 +34,9 @@ function EditForm({ editUser, handleFormData, handleEditMode, isAdminEdition }: 
 
      const sendFormData = (event: any) => {
           event.preventDefault();
-          const updatedUser = { ...editObject, timeOfModification: `${new Date().toDateString()} ${new Date().toLocaleTimeString()}` };
-          //update profile pic if gender is changed and imput is ""
+          const updatedUser = { ...editObject, timeOfModification: `${new Date().toDateString()} ${new Date().toLocaleTimeString()}` };   
           handleFormData(updatedUser)
-          console.log(updatedUser);
+          // console.log(updatedUser);
 
      }
 
@@ -53,25 +54,31 @@ function EditForm({ editUser, handleFormData, handleEditMode, isAdminEdition }: 
 
                     <div>
                          <label htmlFor="fname">First name: </label>
-                         <input onChange={handleInputs} type="text" name="fname" id="fname" value={editObject?.fname} />
+                         <input onChange={handleInputs}
+                              type="text" name="fname" id="fname" value={editObject?.fname}
+                              required={true} maxLength={15} minLength={2} />
                     </div>
                     <div>
                          <label htmlFor="lname">Last name: </label>
-                         <input onChange={handleInputs} type="text" name="lname" id="lname" value={editObject?.lname} />
+                         <input onChange={handleInputs}
+                              type="text" name="lname" id="lname" value={editObject?.lname}
+                              required={true} maxLength={15} minLength={2} />
                     </div>
                     <div>
-                         <label htmlFor="username">Username</label>
+                         <label htmlFor="username">Username:</label>
                          <input onChange={handleInputs}
                               type="text" name="username" id="username"
-                              value={editObject?.username} readOnly={true} />
+                              value={editObject?.username} readOnly={true}
+                              className={styles.usernameLOckedField} />
+
                     </div>
                     {
                          isAdminEdition === undefined ?
                               //undefined - > user edit self 
                               <>
                                    <div>
-                                        <label htmlFor="password">New Password</label>
-                                        <input onChange={handleInputs} type="text" name="password" id="password" value={editObject?.password} />
+                                        <label htmlFor="password">New Password:</label>
+                                        <input onChange={handleInputs} type="password" name="password" id="password" value={editObject?.password} />
                                    </div>
                                    {/* edit self by Admin*/}
                                    {
@@ -79,7 +86,7 @@ function EditForm({ editUser, handleFormData, handleEditMode, isAdminEdition }: 
                                         (RoleEnum[editUser!.role] === "Admin") &&
                                         <>
                                              <div>
-                                                  <label htmlFor="status">User status</label>
+                                                  <label htmlFor="status">User status:</label>
                                                   <select onChange={handleInputs} name="status" id="status" defaultValue={editObject?.status}>
                                                        <option value={StatusEnum.Active}>Active</option>
                                                        <option value={StatusEnum.Deactivated}>Deactivated</option>
@@ -101,7 +108,7 @@ function EditForm({ editUser, handleFormData, handleEditMode, isAdminEdition }: 
                               //admin edit other user
                               (<>
                                    <div>
-                                        <label htmlFor="status">User status</label>
+                                        <label htmlFor="status">User status:</label>
                                         <select onChange={handleInputs} name="status" id="status" defaultValue={editObject?.status}>
                                              <option value={StatusEnum.Active}>Active</option>
                                              <option value={StatusEnum.Deactivated}>Deactivated</option>
@@ -119,19 +126,23 @@ function EditForm({ editUser, handleFormData, handleEditMode, isAdminEdition }: 
 
                     }
                     <div>
-                         <label htmlFor="gender">Gender</label>
+                         <label htmlFor="gender">Gender:</label>
                          <select onChange={handleInputs} name="gender" id="gender" defaultValue={editObject?.gender}>
                               <option value={GenderEnum.Male}>male</option>
                               <option value={GenderEnum.female}>female</option>
                          </select>
                     </div>
                     <div>
-                         <label htmlFor="picture">Picture(URL)</label>
+                         <label htmlFor="picture">Picture(URL):</label>
                          <input onChange={handleInputs} type="text" name="picture" id="picture" value={editObject?.picture} />
                     </div>
                     <div>
-                         <label htmlFor="description">Short description</label>
-                         <textarea onChange={handleInputs} name="description" id="desc" cols={30} rows={10} value={editObject?.description}></textarea>
+                         <label htmlFor="description">Description:</label>
+                         <textarea onChange={handleInputs}
+                              name="description" id="desc" cols={30} rows={10} value={editObject?.description}
+                              maxLength={512}
+                              placeholder="Not necessary only if you are in the mood &#128516;"
+                         ></textarea>
                     </div>
                     <button type="submit">SAVE EDITION</button>
                </form>

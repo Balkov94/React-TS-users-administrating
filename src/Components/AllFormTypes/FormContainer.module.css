@@ -5,7 +5,11 @@
      flex-direction: column;
      justify-content: center;
      align-items: center;
-     border: 2px solid green;
+     /* border: 2px solid green; */
+
+     background-image: url("../../images/carbon1.webp");
+     background-size: contain;
+    
 }
 
 .formContainer h1{
@@ -19,16 +23,15 @@
       
 }
 .mformContainerain label{
-     padding-right: 12px;
+     padding-right: 20px;
 }
+/* ALL FORM  (other part of syling is in app.module.css) */
 .formContainer form{
-     border: 2px solid blue;
      height: fit-content;
-     width:400px;
+     width:440px;
      display: flex;
      flex-direction: column;
-     position: relative;
-     
+     position: relative;   
 }
 
 .loginForm{
@@ -39,6 +42,8 @@
      display: flex;
      justify-content: center;
      padding-top: 40px;
+
+   
 }
 .formSwitchBtn{
      position: absolute;
@@ -54,4 +59,14 @@
      top: 60px;
      left: 0px;
      z-index: 10;
+
+     background-image: url("../../images/carbon1.webp");
+     background-size: contain;
+    
+}
+
+/* username is READONLY field style change */
+
+.usernameLOckedField{
+     background-color: rgb(86, 86, 86);
 }

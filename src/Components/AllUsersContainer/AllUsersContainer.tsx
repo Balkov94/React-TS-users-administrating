@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { UserApi } from "../../Rest-APi-Client/client";
 import { RoleEnum, StatusEnum, UserClass } from "../../Rest-APi-Client/shared-types";
 import Filters, { IFilterValues } from "../FIlters/Filter";
-import RegisterForm, { IFormData } from "../FormContainer/RegisterForm";
+import RegisterForm, { IFormData } from "../AllFormTypes/RegisterForm";
 import UserCard from "../UserCard/UserCard";
 import styles from "./AllUsersContainer.module.css"
 
@@ -18,7 +18,7 @@ function AllUsersContainer({ loggedUser }: IAllUserContainerProps) {
      useEffect(() => {
           UserApi.findAll()
                .then(res => {
-                    setFetchedUsers(res);
+                    setFetchedUsers(res.reverse());
                })
                .catch(err => alert("ERROR:Coudn't get users from the date!"))
      }, []);
@@ -59,7 +59,9 @@ function AllUsersContainer({ loggedUser }: IAllUserContainerProps) {
                     UserApi.create(newUserObj)
                          .then(res => {
                               alert("Successful registration!");
-                              setFetchedUsers(fetchedUsers => fetchedUsers.concat(res));
+                              // setFetchedUsers(fetchedUsers => fetchedUsers.concat(res));
+                              //put new user infront of the array
+                              setFetchedUsers(fetchedUsers => [res,...fetchedUsers]);
                          })
                          .catch(err => alert("ERROR: Unsuccessful creation!!!"))
                })
@@ -106,8 +108,8 @@ function AllUsersContainer({ loggedUser }: IAllUserContainerProps) {
                               const role = filter.role === "All" ? user.role : filter.role;
                               const status = filter.status === "All" ? user.status : filter.status;
                               if (user.id !== loggedUser.id
-                                   && user.role === role
-                                   && user.status === status
+                                   && user.role == role 
+                                   && user.status == status //StatusEnum return num but from fetch get str FIX -> ==
                                    && (user.username.toLowerCase().includes(filter.searchText.toLowerCase())
                                         || ((user.fname.toLowerCase().includes(filter.searchText.toLowerCase())))
                                         || (user.lname.toLowerCase().includes(filter.searchText.toLowerCase())))) {
