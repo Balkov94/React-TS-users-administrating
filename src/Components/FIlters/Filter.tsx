@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { useState } from "react";
 import { RoleEnum, StatusEnum } from "../../Rest-APi-Client/shared-types";
 import styles from "./Filters.module.css";
 
@@ -45,8 +45,8 @@ function Filters({ onfilterChange, filterValues }: IFilterProps) {
           //create new filter and overide last changed input 
           let newFilter = { role: role, status: status, searchText: searchText, [propName]: propValue }
           onfilterChange({ ...newFilter })
-
      }
+   
 
      return (
           <div className={styles.filterContainer}>
@@ -56,11 +56,11 @@ function Filters({ onfilterChange, filterValues }: IFilterProps) {
                          <input type="text" name="searchText" id="searchText"
                               value={searchText}
                               onChange={(event) => handleInput(event)}
-                              onClick={() => setSearchText("")}
+                              
                          />
 
-                         <label htmlFor="role">Filter by Role:</label>
-                         <select name="role" id="role"
+                         <label htmlFor="filter-role">Filter by Role:</label>
+                         <select name="role" id="filter-role"
                               onChange={(event) => hadnleRole(event)}
                               defaultValue={role}>
                               <option value={"All"}>All</option>
@@ -68,8 +68,8 @@ function Filters({ onfilterChange, filterValues }: IFilterProps) {
                               <option value={RoleEnum.Admin}>Admin</option>
                          </select>
 
-                         <label htmlFor="status">Filter by Status:</label>
-                         <select name="status" id="status"
+                         <label htmlFor="filter-status">Filter by Status:</label>
+                         <select name="status" id="filter-status"
                               onChange={(event) => handleStatus(event)}
                               defaultValue={"All"}>
                               <option value={"All"}>All</option>

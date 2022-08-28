@@ -23,16 +23,30 @@ form input,select {
      
 }
 textarea {
+     font-size: 18px;
      padding: 18px;
      background-color: black;
-     outline-color: rgb(6, 247, 235);
+     outline-color: rgb(19, 218, 45);
+     color: lime;
+     
 }
 button{
+     margin: auto;
+     margin-bottom: 22px;
+     width: fit-content;
+     padding:4px 8px 4px 8px;
      background-color: rgb(53, 142, 230);
-     height: 26px;
+     height: fit-content;
      font-size: 18px;
 }
 button:hover{
      background-color: rgb(19, 121, 223);
      cursor: pointer;
 }
+
+@media only screen and (max-width: 500px) {
+     form {
+       zoom: 0.9;
+       margin: auto;
+     }
+   }

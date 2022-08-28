@@ -6,6 +6,7 @@ import {
      TimeOfModificationType,
      UserClass
 } from "../../Rest-APi-Client/shared-types";
+import React from "react";
 
 export interface IFormData {
      id?: IdType
@@ -36,9 +37,22 @@ export interface IRegisterFormProps {
 
 function RegisterForm({ handleCreateUser, isAdminUsingForm, switchForm, handleShowCreateForm }: IRegisterFormProps) {
 
-     const sendFormData = (event: any) => {
+     const sendFormData = (event: React.FormEvent<HTMLFormElement>) => {
           event.preventDefault();
           const formData = new FormData(event.currentTarget);
+          // fname and lname validation
+          const firstname = (formData.get("fname"))!.toString();
+          const lastName = (formData.get("lname"))!.toString();
+          let fnameCheck = containsNumber(firstname);
+          let lnameCheck = containsNumber(lastName);
+          function containsNumber(str:string) {
+               return /[^a-zA-ZаА-яЯ]/.test(str);
+          }
+          if (fnameCheck===true || lnameCheck===true) {
+               alert("First name and last name have to contain only letters (EN/BG)");
+               return;
+          }
+
 
           //Password VALIDATION  8chars length - !!! 1 digit , 1 symbol atleast    
           if (formData.get("password") !== formData.get("confirmPassword")) {
@@ -88,8 +102,7 @@ function RegisterForm({ handleCreateUser, isAdminUsingForm, switchForm, handleSh
                formData.get("picture") as string,
                formData.get("description") as string,
           )
-               
-          console.log(newUser);
+
           handleCreateUser(newUser)
      }
 
@@ -116,32 +129,33 @@ function RegisterForm({ handleCreateUser, isAdminUsingForm, switchForm, handleSh
                     </div>
                     <div>
                          <label htmlFor="fname">*First name: </label>
-                         <input type="text" name="fname" id="fname" 
-                         required={true} maxLength={15} minLength={2}
-                         placeholder="John" />
+                         <input type="text" name="fname" id="fname"
+                              required={true} maxLength={15} minLength={2}
+                              placeholder="John" />
                     </div>
                     <div>
                          <label htmlFor="lname">*Last name: </label>
-                         <input type="text" name="lname" id="lname" 
-                         required={true} maxLength={15} minLength={2}
-                         placeholder="Wick" />
+                         <input type="text" name="lname" id="lname"
+                              required={true} maxLength={15} minLength={2}
+                              placeholder="Wick" />
                     </div>
                     <div>
                          <label htmlFor="username">*Username:</label>
-                         <input type="text" name="username" id="username" required={true} 
-                         placeholder="JWick_username"/>
+                         <input type="text" name="username" id="username"
+                              maxLength={15} minLength={5} required={true}
+                              placeholder="JWick_username" />
                     </div>
                     <div>
                          <label htmlFor="password">*Password:</label>
-                         <input type="password" name="password" id="password" 
-                         required={true} minLength={8} 
-                         placeholder="*******7@"/>
+                         <input type="password" name="password" id="password"
+                              required={true} minLength={8} autoComplete="off"
+                              placeholder="numbers,sign,letters" />
                     </div>
                     <div>
                          <label htmlFor="confirmPassword">*Repeat password:</label>
-                         <input type="password" name="confirmPassword" id="confirmPassword" 
-                         required={true} minLength={8}
-                         placeholder="*******7@"/>
+                         <input type="password" name="confirmPassword" id="confirmPassword"
+                              required={true} minLength={8} autoComplete="off"
+                              placeholder="atleast 8 chars" />
                     </div>
                     <div>
                          <label htmlFor="gender">Gender:</label>
@@ -171,15 +185,15 @@ function RegisterForm({ handleCreateUser, isAdminUsingForm, switchForm, handleSh
 
                     <div>
                          <label htmlFor="picture">Picture(URL):</label>
-                         <input type="text" name="picture" id="picture" placeholder="image link"/>
+                         <input type="text" name="picture" id="picture" placeholder="image address" />
                     </div>
                     <div>
                          <label htmlFor="description">Description:</label>
-                         <textarea name="description" id="desc" 
-                         cols={30} rows={10} maxLength={512}
-                         placeholder="Not necessary only if you are in the mood &#128516;"></textarea >
+                         <textarea name="description" id="desc"
+                              cols={20} rows={10} maxLength={512}
+                              placeholder="Not necessary only if you are in the mood &#128516;"></textarea >
                     </div>
-                    <p style={{width:"100%",textAlign:"center" }}>all fields with * are required</p>
+                    <p style={{ width: "100%", textAlign: "center" }}>all fields with * are required</p>
                     <button type="submit">make registration</button>
                </form>
           </div>

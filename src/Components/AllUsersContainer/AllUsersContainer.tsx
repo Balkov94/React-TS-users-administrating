@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { UserApi } from "../../Rest-APi-Client/client";
-import { RoleEnum, StatusEnum, UserClass } from "../../Rest-APi-Client/shared-types";
+import {UserClass } from "../../Rest-APi-Client/shared-types";
 import Filters, { IFilterValues } from "../FIlters/Filter";
 import RegisterForm, { IFormData } from "../AllFormTypes/RegisterForm";
 import UserCard from "../UserCard/UserCard";
@@ -61,7 +61,9 @@ function AllUsersContainer({ loggedUser }: IAllUserContainerProps) {
                               alert("Successful registration!");
                               // setFetchedUsers(fetchedUsers => fetchedUsers.concat(res));
                               //put new user infront of the array
-                              setFetchedUsers(fetchedUsers => [res,...fetchedUsers]);
+                              setFetchedUsers(fetchedUsers => [res, ...fetchedUsers]);
+                              // close createUserForm
+                              handleShowCreateForm();
                          })
                          .catch(err => alert("ERROR: Unsuccessful creation!!!"))
                })
@@ -79,6 +81,37 @@ function AllUsersContainer({ loggedUser }: IAllUserContainerProps) {
           setFilter(newFilterValues);
      }
 
+     // Eachtime filter changed => get new Sorted elements
+     const [filtredUsers, setFiltredUsers] = useState<JSX.Element[]>([]);
+     useEffect(() => {
+          const filtredUsers = fetchedUsers.filter(user => {
+               // if filtervalue ==="All" need to return all of curr value
+               const role = filter.role === "All" ? user.role : filter.role;
+               const status = filter.status === "All" ? user.status : filter.status;
+               if (user.id !== loggedUser.id
+                    && user.role == role
+                    && user.status == status //StatusEnum return num but from fetch get str FIX -> ==
+                    && (user.username.toLowerCase().includes(filter.searchText.toLowerCase())
+                         || ((user.fname.toLowerCase().includes(filter.searchText.toLowerCase())))
+                         || (user.lname.toLowerCase().includes(filter.searchText.toLowerCase())))) {
+                    return user;
+               }
+          }).map((user: IFormData) => {
+               return <UserCard
+                    key={user.id}
+                    user={user}
+                    handleEditUser={handleEditUser}
+                    handleDeleteUser={handleDeleteUser}
+               ></UserCard>
+          })
+
+          setFiltredUsers(filtredUsers)
+          // setFetchedUsers combine changes of all (dleteUser.CreateUser,editUser)
+     }, [filter, fetchedUsers, loggedUser]);
+
+
+
+
 
 
      return (
@@ -86,7 +119,9 @@ function AllUsersContainer({ loggedUser }: IAllUserContainerProps) {
                <h1 className={styles.userListTitle}>Users list</h1>
                <button className={styles.createNewUser}
                     onClick={() => setShowCreateForm(showCreateForm => !showCreateForm)}
-               >Create new user</button>
+               >{showCreateForm ?
+               "close"
+                : ((<i className="fa fa-user-plus" style={{fontSize:"18px",color:"white"}}>   create new user</i>))}</button>
                {
                     showCreateForm
                     && <RegisterForm
@@ -100,31 +135,22 @@ function AllUsersContainer({ loggedUser }: IAllUserContainerProps) {
                     filterValues={filter}
                     onfilterChange={handleFilterChanges}
                ></Filters>
+               {
+                    // if createUserForm is active dont'show users list (userCard)
+                    showCreateForm === false
+                    &&
+                    <div className={styles.cardWrapper}>
+                         {
+                              (filtredUsers !== undefined && filtredUsers.length > 0)
+                                   ? filtredUsers
+                                   : (<h1 style={{color:"lightgreen"}}>
+                                        <i className="fa fa-warning" style={{fontSize:"22px",color:"yellow",paddingRight:"12px"}}></i>
+                                        There aren't any users with this filter!</h1>)
 
-               <div className={styles.cardWrapper}>
-                    {
-                         fetchedUsers.filter(user => {
-                              // if filtervalue ==="All" need to return all of curr value
-                              const role = filter.role === "All" ? user.role : filter.role;
-                              const status = filter.status === "All" ? user.status : filter.status;
-                              if (user.id !== loggedUser.id
-                                   && user.role == role 
-                                   && user.status == status //StatusEnum return num but from fetch get str FIX -> ==
-                                   && (user.username.toLowerCase().includes(filter.searchText.toLowerCase())
-                                        || ((user.fname.toLowerCase().includes(filter.searchText.toLowerCase())))
-                                        || (user.lname.toLowerCase().includes(filter.searchText.toLowerCase())))) {
-                                   return user;
-                              }
-                         }).map((user: IFormData) => {
-                              return <UserCard
-                                   key={user.id}
-                                   user={user}
-                                   handleEditUser={handleEditUser}
-                                   handleDeleteUser={handleDeleteUser}
-                              ></UserCard>
-                         })
-                    }
-               </div>
+                         }
+                    </div>
+               }
+
           </div>
      );
 }

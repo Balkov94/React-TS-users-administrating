@@ -50,7 +50,7 @@ function LoginForm({ handleLoginData, switchForm }: ILoginFormProps) {
                          <input type="text"
                               name="username"
                               id="username"
-                              // minLength={2}
+                              maxLength={15} minLength={5}
                               required={true}
                               value={username}
                               onChange={handleInputs}
@@ -61,7 +61,8 @@ function LoginForm({ handleLoginData, switchForm }: ILoginFormProps) {
                          <input type="password"
                               name="password"
                               id="password"
-                              // minLength={2}
+                              autoComplete="on"
+                              minLength={8}
                               required={true}
                               value={password}
                               onChange={handleInputs}

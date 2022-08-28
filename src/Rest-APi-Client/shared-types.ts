@@ -13,7 +13,7 @@ export enum StatusEnum {
      Active = 1, Deactivated,Suspended,
 }
 
-export type DescriptionType = string | undefined
+export type DescriptionType = string | ""
 export type TimeOfModificationType = string | null
 
 export class UserClass {

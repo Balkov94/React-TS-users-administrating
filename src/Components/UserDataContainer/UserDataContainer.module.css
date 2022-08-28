@@ -1,4 +1,4 @@
-.dataContainer{
+.dataContainer {
      width: 100%;
      display: flex;
      flex-direction: column;
@@ -11,48 +11,83 @@
      max-height: fit-content;
 
 }
-.data{
+
+.data {
      margin-top: 8px;
      width: 100%;
      font-size: 16px;
      position: relative;
      padding-left: 20px;
-     padding-top:12px;
+     padding-top: 12px;
      padding-bottom: 26px;
      border: 1px solid green;
      background-color: black;
      opacity: 0.9;
 }
-.data p{
+
+.data p {
      padding-bottom: 8px;
 }
+
 /* description p */
-.descriptionP{
+.descriptionP {
      width: 60%;
+     height: fit-content;
+     word-wrap: break-word;
+     padding: 12px;
 }
-.profilePic{
+.descriptionP span{
+     font-style: italic;
+}
+
+.profilePicContainer {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     flex-direction: column;
      position: absolute;
      right: 0;
      top: 0;
-     width: 180px;
 }
-.editProfileBtn{
+
+.profilePic {
+     width: 260px;
+}
+
+.editProfileBtn {
      margin-top: 28px;
-     width: 20%;
+     width: 170px;
      bottom: 0;
      left: 0;
-     height: fit-content;
 }
-.logoutBtn{
+
+.logoutBtn {
      position: absolute;
      right: 0px;
-     top:0px;
+     top: 0px;
 }
 
-
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 800px) {
      .profilePic {
-       zoom: 0.6;
+          zoom: 0.9;
      }
-   
-   }
+
+}
+@media only screen and (max-width: 700px) {
+     .profilePic {
+          zoom: 0.6;
+     }
+
+}
+@media only screen and (max-width: 430px) {
+     .profilePic {
+          zoom: 0.3;
+     }
+
+}
+@media only screen and (max-width: 600px) {
+     .descriptionP {
+          width: 100%;  
+     }
+
+}

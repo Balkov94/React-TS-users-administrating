@@ -3,8 +3,9 @@ import {
      GenderEnum,
      RoleEnum,
      StatusEnum,
+     UserClass,
 } from "../../Rest-APi-Client/shared-types";
-import { useState } from "react";
+import React, { useState } from "react";
 import { IFormData } from "./RegisterForm";
 
 interface IEditFormProps {
@@ -14,6 +15,9 @@ interface IEditFormProps {
      editUser?: IFormData;
 }
 
+
+
+
 function EditForm({ editUser,
      handleFormData,
      handleEditMode,
@@ -22,9 +26,9 @@ function EditForm({ editUser,
      // USING props into a local STATE -> because there is A SINGLE SOURCE OF TRUTH
      const [editObject, setEditObject] = useState(editUser)
 
-     const handleInputs = (event: any) => {
-          const propName = event.target.name;
-          const newValue = event.target.value;
+     const handleInputs = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+          const propName = event.currentTarget.name;
+          const newValue = event.currentTarget.value;
           const newObj: any = {
                ...editObject,
                [propName]: newValue,
@@ -32,17 +36,56 @@ function EditForm({ editUser,
           setEditObject(newObj)
      }
 
-     const sendFormData = (event: any) => {
+     const sendFormData = (event: React.FormEvent) => {
           event.preventDefault();
-          const updatedUser = { ...editObject, timeOfModification: `${new Date().toDateString()} ${new Date().toLocaleTimeString()}` };   
+          const updatedUser = { ...editObject, timeOfModification: `${new Date().toDateString()} ${new Date().toLocaleTimeString()}` };
+
+           // fname and lname validation
+           const firstname = editObject!.fname.toString().trim();
+           const lastName = editObject!.lname.toString().trim()
+           let fnameCheck = containsNumber(firstname);
+           let lnameCheck = containsNumber(lastName);
+           function containsNumber(str:string) {
+                return /[^a-zA-ZаА-яЯ]/.test(str);
+           }
+           if (fnameCheck===true || lnameCheck===true) {
+                alert("First name and last name have to contain only letters (EN/BG)");
+                return;
+           }
+
+
+          //Password VALIDATION  8chars length - !!! 1 digit , 1 symbol atleast    
+          const currPassword = editObject?.password.toString().split("");
+          let haveDigit = false;
+          let haveSpecialSign = false;
+          currPassword?.forEach(char => {
+               const currASCIICode = char.charCodeAt(0);
+               if (currASCIICode >= 48 && currASCIICode <= 57) {
+                    haveDigit = true;
+               }
+               else if (currASCIICode >= 33 && currASCIICode <= 47
+                    || (currASCIICode >= 58 && currASCIICode <= 64)
+                    || (currASCIICode >= 91 && currASCIICode <= 95)
+                    || (currASCIICode >= 123 && currASCIICode <= 126)) {
+                    haveSpecialSign = true;
+               }
+          })
+          if (haveDigit === false || haveSpecialSign === false) {
+               alert("Your password must contain atleast one digit and special sign( _ , &, $ etc.)");
+               return;
+          }
+
           handleFormData(updatedUser)
           // console.log(updatedUser);
 
      }
+     const clearInputField = (event: React.MouseEvent<HTMLInputElement>) => {
+          event.currentTarget.value = "";
+     }
 
 
      return (
-          <div className={styles.registerForm}>
+          <div className={styles.editForm}>
                <form action="submit" onSubmit={sendFormData}>
                     <div className={styles.formTitle}>
                          <h1>Edit {editUser?.username}'s profile
@@ -68,6 +111,7 @@ function EditForm({ editUser,
                          <label htmlFor="username">Username:</label>
                          <input onChange={handleInputs}
                               type="text" name="username" id="username"
+                              maxLength={15} minLength={5}
                               value={editObject?.username} readOnly={true}
                               className={styles.usernameLOckedField} />
 
@@ -77,10 +121,12 @@ function EditForm({ editUser,
                               //undefined - > user edit self 
                               <>
                                    <div>
-                                        <label htmlFor="password">New Password:</label>
-                                        <input onChange={handleInputs} type="password" name="password" id="password" value={editObject?.password} />
+                                        <label htmlFor="password">Password:</label>
+                                        <input onChange={handleInputs} type="text" name="password" id="password"
+                                             value={editObject?.password} autoComplete="off"
+                                             minLength={8} />
                                    </div>
-                                   {/* edit self by Admin*/}
+                                   {/* edit self and you are Admin*/}
                                    {
 
                                         (RoleEnum[editUser!.role] === "Admin") &&
@@ -134,12 +180,14 @@ function EditForm({ editUser,
                     </div>
                     <div>
                          <label htmlFor="picture">Picture(URL):</label>
-                         <input onChange={handleInputs} type="text" name="picture" id="picture" value={editObject?.picture} />
+                         <input onChange={handleInputs}
+                              onClick={(event) => clearInputField(event)}
+                              type="text" name="picture" id="picture" value={editObject?.picture} />
                     </div>
                     <div>
                          <label htmlFor="description">Description:</label>
                          <textarea onChange={handleInputs}
-                              name="description" id="desc" cols={30} rows={10} value={editObject?.description}
+                              name="description" id="desc" cols={20} rows={10} value={editObject?.description}
                               maxLength={512}
                               placeholder="Not necessary only if you are in the mood &#128516;"
                          ></textarea>

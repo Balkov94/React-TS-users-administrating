@@ -15,8 +15,10 @@ function UserCard({ user, handleDeleteUser, handleEditUser }: IUserCardProps) {
      const [cardMenu, setCardMenu] = useState(false);
      const [editMode, setEditMode] = useState(false);
 
+     // pn/OFF option menu on card (menu->1.Edit 2.Delete)
      const handleCardMenu = () => {
           setCardMenu(cardMenu => !cardMenu);
+
      }
 
      const onDelete = () => {
@@ -28,17 +30,34 @@ function UserCard({ user, handleDeleteUser, handleEditUser }: IUserCardProps) {
 
      }
 
+     // Open close EditFOrm (fixed form div)
      const handleEditMode = () => {
           setEditMode(editMode => !editMode);
           setCardMenu(false);
+          // iff edit mode is on block scrolling
+          if (editMode === false) {
+               document.body.style.overflow = "hidden";
+          }
+          else {
+               document.body.style.overflow = "visible";
+          }
      }
 
      const onEdit = (updatedUser: UserClass) => {
           UserApi.update(updatedUser)
                .then(user => {
                     handleEditUser(user);
+                    // 1. close cad menu 2.close EditForm 3.on/off scroll
                     setCardMenu(false);
                     setEditMode(editMode => !editMode);
+                    // iff edit mode is on block scrolling
+                    if (editMode === false) {
+                         document.body.style.overflow = "hidden";
+                    }
+                    else {
+                         document.body.style.overflow = "visible";
+                    }
+                    
                     return user;
                })
                .then(user => {
@@ -60,7 +79,7 @@ function UserCard({ user, handleDeleteUser, handleEditUser }: IUserCardProps) {
                          (<div className={styles.card}>
                               <div className={styles.imgContainer}>
                                    <img src={user.picture}
-                                        alt="someimg"></img>
+                                        alt="profilePicture"></img>
                               </div>
                               <div className={styles.optionsButton} onClick={handleCardMenu}>
                                    <img src={require("./optIcon.png")} alt="optionsIcon" />

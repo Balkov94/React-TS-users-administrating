@@ -1,13 +1,10 @@
-
 import styles from "./Header.module.css";
 
-function Header() {
-
-     
+function Header() { 
      return (
           <header className={styles.header}>
-               <h1>TypeScript + ReactJS Users administrating project
-               {/* <img src={require('./chat.png')}  alt="Logo" /> */}
+               <h1>TypeScript + ReactJS Users administration project
+               <img src={require('./usersIcon.jpg')}  alt="users-icon" />
                </h1>
           </header>
      );

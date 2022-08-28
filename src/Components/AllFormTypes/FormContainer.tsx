@@ -13,7 +13,7 @@ export type IEditMode = true | false
 function FormContainer() {
      const [formType, setFormType] = useState<FormType>("login");
      const [logged, setLogged] = useState<Logged>(false)
-     const [loggedUser, setLoggedUser] = useState<IFormData>();
+     const [loggedUser, setLoggedUser] = useState<UserClass>();
 
 
 
@@ -77,6 +77,14 @@ function FormContainer() {
 
      const handleEditMode = () => {
           setEditMode(editMode => !editMode);
+          
+          // iff edit mode is on block scrolling
+          if(editMode===false){
+               document.body.style.overflow = "hidden";
+          }
+          else{
+               document.body.style.overflow = "visible";
+          }
      }
 
      const handleUserEdition = (formData: UserClass) => {

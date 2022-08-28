@@ -19,6 +19,8 @@
      margin-left: 20px;
      width: 36px;
      vertical-align: middle;
+     border: 2px solid green;
+     border-radius: 25px;
 }
 
 @media only screen and (max-width: 600px) {
