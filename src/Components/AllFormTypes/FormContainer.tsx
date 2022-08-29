@@ -33,6 +33,7 @@ function FormContainer() {
           UserApi.findAll()
                .then((response) => response)
                .then(data => {
+                    console.log(`I will leave this here:`);
                     console.log(data);
                     return data;
                })
@@ -49,7 +50,10 @@ function FormContainer() {
                .then(res => {
                     return res !== undefined ?
                          handleIslogged() : alert("Wrong username or password!")
-               }).catch(err => alert(err))
+               }).catch(err => {
+                    alert(`ERROR: Failed operation!
+                    Server is not responding!`);
+               })
      }
 
      const handleIslogged = () => {
@@ -65,10 +69,13 @@ function FormContainer() {
                     }
                     UserApi.create(formData)
                          .then(res => {
-                              alert("Successful registration!");
+                              alert(`*************************************************************************
+                              Successful registration!`);
                               setFormType("login");
                          })
-                         .catch(err => alert(err))
+                         .catch(err => {
+                              alert("ERROR: Failed creation!")
+                         })
                })
      }
 
@@ -77,12 +84,12 @@ function FormContainer() {
 
      const handleEditMode = () => {
           setEditMode(editMode => !editMode);
-          
+
           // iff edit mode is on block scrolling
-          if(editMode===false){
+          if (editMode === false) {
                document.body.style.overflow = "hidden";
           }
-          else{
+          else {
                document.body.style.overflow = "visible";
           }
      }
@@ -90,14 +97,16 @@ function FormContainer() {
      const handleUserEdition = (formData: UserClass) => {
           UserApi.update(formData)
                .then(res => {
-                    alert(`${formData.username}'s profile was updated.`)
+                    alert(`*************************************************************************
+                    ${formData.username}'s profile was updated.`);
+                    
                     //after edint profile update user in state too
                     setLoggedUser(formData);
                     // close edinform
                     handleEditMode();
 
                })
-               .catch(err => alert(err))
+               .catch(err => alert("ERROR:Failed to edit user!"))
      }
 
 

@@ -20,7 +20,7 @@ function AllUsersContainer({ loggedUser }: IAllUserContainerProps) {
                .then(res => {
                     setFetchedUsers(res.reverse());
                })
-               .catch(err => alert("ERROR:Coudn't get users from the date!"))
+               .catch(err => alert("ERROR:Coudn't get users from the data!"))
      }, []);
 
      // users CRUD ___________________________________________________________________
@@ -30,7 +30,7 @@ function AllUsersContainer({ loggedUser }: IAllUserContainerProps) {
                     setFetchedUsers(fetchedUsers.filter(user => user.id !== userID));
                })
                .catch(err => {
-                    alert("Error: Unsuccessful deletion!");
+                    alert("ERROR: Unsuccessful deletion!");
                })
      }
 
@@ -58,7 +58,8 @@ function AllUsersContainer({ loggedUser }: IAllUserContainerProps) {
                     }
                     UserApi.create(newUserObj)
                          .then(res => {
-                              alert("Successful registration!");
+                              alert(`*************************************************************************
+                              Successful created user - ${newUserObj.username}!`);
                               // setFetchedUsers(fetchedUsers => fetchedUsers.concat(res));
                               //put new user infront of the array
                               setFetchedUsers(fetchedUsers => [res, ...fetchedUsers]);

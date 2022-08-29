@@ -3,7 +3,6 @@ import {
      GenderEnum,
      RoleEnum,
      StatusEnum,
-     UserClass,
 } from "../../Rest-APi-Client/shared-types";
 import React, { useState } from "react";
 import { IFormData } from "./RegisterForm";
@@ -192,7 +191,7 @@ function EditForm({ editUser,
                               placeholder="Not necessary only if you are in the mood &#128516;"
                          ></textarea>
                     </div>
-                    <button type="submit">SAVE EDITION</button>
+                    <button type="submit">SAVE</button>
                </form>
           </div>
      )

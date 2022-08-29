@@ -184,7 +184,7 @@ function RegisterForm({ handleCreateUser, isAdminUsingForm, switchForm, handleSh
                     }
 
                     <div>
-                         <label htmlFor="picture">Picture(URL):</label>
+                         <label htmlFor="picture">Picture (URL):</label>
                          <input type="text" name="picture" id="picture" placeholder="image address" />
                     </div>
                     <div>
@@ -193,8 +193,8 @@ function RegisterForm({ handleCreateUser, isAdminUsingForm, switchForm, handleSh
                               cols={20} rows={10} maxLength={512}
                               placeholder="Not necessary only if you are in the mood &#128516;"></textarea >
                     </div>
-                    <p style={{ width: "100%", textAlign: "center" }}>all fields with * are required</p>
-                    <button type="submit">make registration</button>
+                    <p style={{ width: "100%", textAlign: "center",paddingBottom:"12px" }}>all fields with * are required</p>
+                    <button type="submit">Register</button>
                </form>
           </div>
      )

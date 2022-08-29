@@ -46,7 +46,7 @@ function LoginForm({ handleLoginData, switchForm }: ILoginFormProps) {
                          </h1>
                     </div>
                     <div>
-                         <label htmlFor="username">username</label>
+                         <label htmlFor="username">Username:</label>
                          <input type="text"
                               name="username"
                               id="username"
@@ -54,10 +54,11 @@ function LoginForm({ handleLoginData, switchForm }: ILoginFormProps) {
                               required={true}
                               value={username}
                               onChange={handleInputs}
+                              placeholder="username"
                          />
                     </div>
                     <div>
-                         <label htmlFor="password">password</label>
+                         <label htmlFor="password">Password:</label>
                          <input type="password"
                               name="password"
                               id="password"
@@ -66,11 +67,12 @@ function LoginForm({ handleLoginData, switchForm }: ILoginFormProps) {
                               required={true}
                               value={password}
                               onChange={handleInputs}
+                              placeholder="password"
                          />
                     </div>
-                    <button type="submit"> login</button>
+                    <button type="submit"> Login</button>
                     <div className={styles.testTipsContainer}>
-                         <p>Tips for test: username:1 / password:1</p>
+                         <p>Tips for test: username:1 x 8 / password:1 x 8 + !</p>
 
 
                     </div>

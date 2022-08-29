@@ -61,7 +61,8 @@ function UserCard({ user, handleDeleteUser, handleEditUser }: IUserCardProps) {
                     return user;
                })
                .then(user => {
-                    alert(`You edited ${user.username}'s profile.`)
+                    alert(`*************************************************************************
+                    You edited ${user.username}'s profile.`)
                })
                .catch(err => alert(err))
      }
